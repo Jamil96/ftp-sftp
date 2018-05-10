@@ -1,0 +1,51 @@
+Le SFTP permet de transférer des fichiers par une connexion sécurisée utilisant le protocole SSH.
+SFTP peut effectuer les mêmes opérations que le FTP.
+Du côté du client, on peut :
+? Supprimer et créer des fichiers
+? Envoyer et recevoir des fichiers
+? Déplacer et renommer des fichiers
+Du côté du serveur, on peut :
+? Gérer l'espace alloué à chaque client
+? Administrer les accès de chaque utilisateur sur chaque fichier ou dossier
+? Ajouter, supprimer, modifier les paramètres de chaque groupe ou utilisateur.
+Il est important de noter que le SFTP n'est pas une simple connexion FTP passant par un tunnel SSH :
+Du côté du serveur, on lance sftp-server, qui utilise OpenSSH. Du côté client on utilise un client SFTP
+graphique ou en ligne de commande.
+installation
+prerequis:machine linux(debian ou autre sans interface)
+apt-get update
+
+apt-get install openssh-server
+ groupadd sftpuser(creer un groupe pour les utilisateurs de sftp)
+adduser coumba(ajouter un utilisateur)
+passwd,gpasswd -a
+/etc/ssh/sshd_config /etc/ssh/sshd_config.bak
+ nano /etc/ssh/sshd_config
+
+remplacer
+Subsystem sftp /usr/lib/openssh/sftp-server
+par
+
+Subsystem sftp internal-sftp
+Ajouter a la fin du fichier pour ajouter les groupes qui peuvent qcceder qu serveur et lq locqlisqtion des fichiers
+
+Match group sftponly
+ChrootDirectory /var/www
+X11Forwarding no
+AllowTcpForwarding no
+ForceCommand internal-sftp
+-creer le repertoire /var/www
+/etc/init.d/ssh restart(demarrage du serveur)
+ENVOIE RECEPTION
+-PAR UN CLIENT(FILEZILLA)
+fournir
+-ip serveur
+-nom d'utilisateur
+-mot de passe 
+port(22 par defaut)
+se connecter
+PAR LIGNE DE COMMANDE 
+-sftp nomutilisateur@localhost
+put(pour envoyer sur le serveur)
+get(pour recevoir)
+PRICISER QU'ON PEUT RESTREINDRE LES DROITS(ACCES ECRITURE LECTURE ET EXECUTION)COMME FAITES DANS LE TP
